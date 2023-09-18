@@ -3,7 +3,6 @@ import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 
-import MobileHome from "./mobile/Home";
 import MobileSignUp from "./mobile/SignUp";
 import MobileSignIn from "./mobile/SignIn";
 import { useEffect, useState } from "react";
@@ -24,19 +23,33 @@ export default function Router() {
     };
   }, []);
 
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <>{isMobile ? <MobileHome /> : <Home />}</>,
-    },
+  const desktopRoutes = [
     {
       path: "/signin",
-      element: <>{isMobile ? <MobileSignIn /> : <SignIn />}</>,
+      element: <SignIn />,
     },
     {
       path: "/signup",
-      element: <>{isMobile ? <MobileSignUp /> : <SignUp />}</>,
+      element: <SignUp />,
+    }]
+
+  const mobileRoutes = [
+    {
+      path: "/signin",
+      element: <MobileSignIn />,
     },
+    {
+      path: "/signup",
+      element: <MobileSignUp />,
+    }]
+
+  const routes = isMobile ? mobileRoutes : desktopRoutes;
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Home />,
+    },
+    ...routes,
   ]);
 
   return <RouterProvider router={router} />;
